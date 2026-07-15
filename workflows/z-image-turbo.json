@@ -1,0 +1,141 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "z_image_turbo_bf16.safetensors",
+      "weight_dtype": "default"
+    },
+    "_meta": {
+      "title": "拡散モデルを読み込む"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen_3_4b.safetensors",
+      "type": "lumina2",
+      "device": "default"
+    },
+    "_meta": {
+      "title": "CLIPを読み込む"
+    }
+  },
+  "3": {
+    "class_type": "ModelSamplingAuraFlow",
+    "inputs": {
+      "shift": 3.0,
+      "model": [
+        "1",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "モデルサンプリングオーラフロー"
+    }
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "アニメRPGゲーム風のスタイル。巨大なフェネックの耳と大きくふわふわした狐の尻尾を持つ可愛いアニメの女の子。長く波打つブロンドの髪、大きな青い瞳、ブロンド色のまつげ。ピンクのセーターを着て、金の縁取りが入った大きめの黒い冬用コートと、青いロング丈のマキシスカート、赤いマフラーを身につけている。彼女は夜の荒野でキャンプファイヤーのそばに座り、天の川の見える星空の下でギターを弾いている",
+      "clip": [
+        "2",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "CLIPテキストエンコード（ポジティブ）"
+    }
+  },
+  "5": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "低品質、不自然な体の構造、指の数が多い、指の数が足りない、余分な手足、欠けている手足",
+      "clip": [
+        "2",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "CLIPテキストエンコード（ネガティブ）"
+    }
+  },
+  "6": {
+    "class_type": "EmptySD3LatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "空のSD3潜在画像"
+    }
+  },
+  "7": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "ae.safetensors"
+    },
+    "_meta": {
+      "title": "VAEを読み込む"
+    }
+  },
+  "8": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 8,
+      "cfg": 1.0,
+      "sampler_name": "res_multistep",
+      "scheduler": "simple",
+      "denoise": 1.0,
+      "model": [
+        "3",
+        0
+      ],
+      "positive": [
+        "4",
+        0
+      ],
+      "negative": [
+        "5",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "Kサンプラー"
+    }
+  },
+  "9": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "8",
+        0
+      ],
+      "vae": [
+        "7",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "VAEデコード"
+    }
+  },
+  "10": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "z-image-turbo",
+      "images": [
+        "9",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "画像を保存"
+    }
+  }
+}

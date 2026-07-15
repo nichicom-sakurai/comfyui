@@ -3,5 +3,8 @@ workspace/
 override.txt
 requirements.compiled
 
+.claude/settings.local.json
+.claude/agent-memory/
+
 .DS_Store
 *.log
