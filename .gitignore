@@ -1,0 +1,7 @@
+.venv/
+workspace/
+override.txt
+requirements.compiled
+
+.DS_Store
+*.log
