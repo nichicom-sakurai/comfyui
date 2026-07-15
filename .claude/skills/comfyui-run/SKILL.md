@@ -37,6 +37,8 @@ Use when patching inputs per call (seed sweeps, prompt variations) or when `comf
    curl -s http://127.0.0.1:8188/prompt -X POST -H "Content-Type: application/json" -d @payload.json
    ```
 
+   Write `payload.json` (and any `-o` downloads) to a temporary location outside the repository, or delete them afterwards — they are not gitignored.
+
    Success: `{"prompt_id": "...", "number": ..., "node_errors": {}}`. A 400 response carries `error` + per-node `node_errors` — fix the workflow, do not retry blindly.
 2. Poll for completion (1-2s interval):
 

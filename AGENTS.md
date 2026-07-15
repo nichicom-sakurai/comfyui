@@ -66,7 +66,7 @@ Run every command from the repository root — permission rules in `.claude/sett
 - mise tasks: `mise run <bootstrap|setup-comfyui|launch|start|stop|doctor>`; discover with `mise tasks`
 - comfy-cli: `.venv/bin/comfy --workspace workspace <subcommand>` — always pass `--workspace workspace` exactly in this relative form (it resolves from the repo root, and permission rules match this literal prefix; an embedded `$PWD` would disable prefix matching)
 - ComfyUI HTTP API: `curl -s http://127.0.0.1:8188/<endpoint>` — write the URL immediately after `-s`, and put all other curl flags after the URL (e.g. `-X POST -d @file`, `-o out.png`) so the allowlisted prefix matches; wrap URLs containing `?` or `&` in double quotes. One localhost URL per curl invocation — never chain additional URLs or `--next`.
-- comfy-cli permission rules enumerate approved subcommands on the canonical form above. Destructive or outward-facing subcommands (`node uninstall`, `model remove`, `install`, `update`, `generate`, `publish`, `feedback`, top-level `--where cloud`) intentionally prompt — ask the user before running them.
+- comfy-cli permission rules enumerate approved subcommands on the canonical form above; anything not allowlisted prompts. Notable prompting examples: `node uninstall`, `node disable`, `node restore-snapshot`, `model remove`, workspace-level `install` / `update`, `generate`, `publish`, `feedback`, top-level `--where cloud`. Ask the user before running them.
 - Never pass `--where` or `--host`/non-local hosts on allowlisted comfy subcommands (`run`, `validate`, `jobs`, `download`, `upload`, `logs`), and never pass extra server args to `launch` (e.g. `-- --listen 0.0.0.0`) — the allowlist cannot block mid-argument flags, so this is a hard convention; ask the user first if remote routing is ever needed.
 - comfy-cli emits a JSON envelope (`{"schema": "envelope/1", ...}`) when not attached to a TTY; read `data` / `error` from it
 
@@ -83,10 +83,10 @@ Standard image-generation flow: ensure a suitable model exists (`comfyui-assets`
 
 ## Conventions & Boundaries
 
-- Treat `workspace/` as read-only ground truth: never modify ComfyUI or custom-node code there. Reading it (`server.py`, `nodes.py`, `script_examples/`, `openapi.yaml`) to verify behavior is encouraged.
-- Never delete or rebuild `workspace/` or `.venv/` without an explicit user request; reinstalling costs a multi-GB download.
+- ComfyUI and custom-node code in `workspace/` is read-only ground truth: never modify it. Reading it (`server.py`, `nodes.py`, `script_examples/`, `openapi.yaml`) to verify behavior is encouraged. The data directories (`models/`, `input/`, `output/`, `user/`) are written only through the flows described in the skills.
+- Never delete or rebuild `workspace/` or `.venv/` without an explicit user request; reinstalling costs a multi-GB download. `mise run setup-comfyui` is the sanctioned (re)install path and runs without a prompt — still run it only when the user explicitly asks.
 - Keep git-managed workflow JSONs in `workflows/` in API format (see the `comfyui-workflow` skill). `workspace/user/` is ComfyUI's own save area — do not manage it.
 - AI-facing docs (this file, skill bodies) are English; `README.md` is Japanese.
-- Secrets: pass Hugging Face / Civitai tokens via environment variables or `comfy auth`; never write them into this repository.
+- Secrets: pass Hugging Face / Civitai tokens via environment variables or `.venv/bin/comfy auth`; never write them into this repository.
 - Commits follow Conventional Commits with Japanese descriptions (no scope enum configured).
 - `.claude/settings.json` allow rules take effect after accepting the workspace trust dialog once per machine; put personal overrides in `.claude/settings.local.json` (gitignored).

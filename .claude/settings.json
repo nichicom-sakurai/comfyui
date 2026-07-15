@@ -27,6 +27,7 @@
       "Bash(.venv/bin/comfy --workspace workspace node simple-show:*)",
       "Bash(.venv/bin/comfy --workspace workspace node install-deps:*)",
       "Bash(.venv/bin/comfy --workspace workspace node save-snapshot:*)",
+      "Bash(ls workspace/models/*)",
       "Bash(curl -s http://127.0.0.1:8188/*)",
       "Bash(curl -s \"http://127.0.0.1:8188/*)",
       "WebFetch(domain:docs.comfy.org)"

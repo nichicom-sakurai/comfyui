@@ -29,6 +29,8 @@ mise run stop
 
 起動後は通常、ブラウザで <http://127.0.0.1:8188> を開きます。
 
+初回の画像生成には checkpoint モデルが必要です。Claude Code に「画像を生成して」と依頼して自動導入するか、[公式ガイド](https://docs.comfy.org/ja/get_started/first_generation)の手順で `workspace/models/checkpoints/` にモデルを配置してください。
+
 ## 環境確認
 
 ```bash
@@ -52,7 +54,7 @@ mise tasks
 このワークスペースは Claude Code で運用・活用できるよう整備されています。
 
 - `AGENTS.md`: AI エージェント向け運用ガイド (英語)。`CLAUDE.md` は `AGENTS.md` への symlink
-- `.claude/settings.json`: ComfyUI の起動・停止、ワークフロー実行、モデルダウンロード、カスタムノード追加を確認プロンプトなしで実行するための permissions 設定。初回起動時にこのフォルダを信頼するかの確認が1回必要
+- `.claude/settings.json`: ComfyUI の起動・停止、ワークフロー実行、モデルダウンロード、カスタムノード追加、ローカル API アクセス、docs.comfy.org の参照を確認プロンプトなしで実行するための permissions 設定。初回起動時にこのフォルダを信頼するかの確認が1回必要
 - `.claude/skills/`: プロジェクトスキル4種
   - `comfyui-workflow`: ワークフロー JSON (API 形式) の作成・編集
   - `comfyui-run`: 生成の実行と結果画像の取得

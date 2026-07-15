@@ -1,6 +1,6 @@
 # ComfyUI HTTP API Reference (local server)
 
-Verified against the installed ComfyUI 0.27.1 (`workspace/server.py`, `workspace/openapi.yaml`, `workspace/script_examples/`). Base URL: `http://127.0.0.1:8188`. Every route is also served under the `/api/` prefix (e.g. `/api/prompt`); the shipped `workspace/openapi.yaml` documents the `/api/*` forms.
+Verified against the installed ComfyUI 0.27.1 (`workspace/server.py`, `workspace/openapi.yaml`, `workspace/script_examples/`). Base URL: `http://127.0.0.1:8188`. Every route is also served under the `/api/` prefix (e.g. `/api/prompt`); the shipped `workspace/openapi.yaml` documents the `/api/*` forms. For upstream docs see the `comfyui-docs` skill (Server API section).
 
 ## Core execution endpoints
 

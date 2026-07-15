@@ -37,7 +37,7 @@ All commands run from the repository root using the canonical comfy-cli form. Mo
     --relative-path models/checkpoints --filename v1-5-pruned-emaonly-fp16.safetensors
   ```
 
-- Gated/authenticated downloads: manage tokens with `comfy auth set` (or `--set-hf-api-token` / `--set-civitai-api-token`). Token commands intentionally require a permission prompt; never write tokens into repository files.
+- Gated/authenticated downloads: manage tokens with `.venv/bin/comfy auth set` (or `--set-hf-api-token` / `--set-civitai-api-token`). Token commands intentionally require a permission prompt; never write tokens into repository files.
 - Model sources: prefer official Comfy-Org mirrors on Hugging Face; tutorial pages on docs.comfy.org state the expected model per workflow (`comfyui-docs` skill).
 
 ## Listing and verifying models
