@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mise run bootstrap)",
+      "Bash(mise run setup-comfyui)",
+      "Bash(mise run launch)",
+      "Bash(mise run start)",
+      "Bash(mise run stop)",
+      "Bash(mise run doctor)",
+      "Bash(mise tasks)",
+      "Bash(.venv/bin/comfy --version)",
+      "Bash(.venv/bin/comfy --workspace workspace which)",
+      "Bash(.venv/bin/comfy --workspace workspace stop)",
+      "Bash(.venv/bin/comfy --workspace workspace launch)",
+      "Bash(.venv/bin/comfy --workspace workspace launch --background)",
+      "Bash(.venv/bin/comfy --workspace workspace logs:*)",
+      "Bash(.venv/bin/comfy --workspace workspace run:*)",
+      "Bash(.venv/bin/comfy --workspace workspace validate:*)",
+      "Bash(.venv/bin/comfy --workspace workspace jobs:*)",
+      "Bash(.venv/bin/comfy --workspace workspace download:*)",
+      "Bash(.venv/bin/comfy --workspace workspace upload:*)",
+      "Bash(.venv/bin/comfy --workspace workspace model download:*)",
+      "Bash(.venv/bin/comfy --workspace workspace model list:*)",
+      "Bash(.venv/bin/comfy --workspace workspace node install:*)",
+      "Bash(.venv/bin/comfy --workspace workspace node update:*)",
+      "Bash(.venv/bin/comfy --workspace workspace node show:*)",
+      "Bash(.venv/bin/comfy --workspace workspace node simple-show:*)",
+      "Bash(.venv/bin/comfy --workspace workspace node install-deps:*)",
+      "Bash(.venv/bin/comfy --workspace workspace node save-snapshot:*)",
+      "Bash(curl -s http://127.0.0.1:8188/*)",
+      "Bash(curl -s \"http://127.0.0.1:8188/*)",
+      "WebFetch(domain:docs.comfy.org)"
+    ]
+  }
+}

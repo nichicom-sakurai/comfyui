@@ -30,7 +30,7 @@ mise run setup-comfyui
 | Foreground launch | `mise run launch` |
 | Background launch | `mise run start` |
 | Stop background instance | `mise run stop` |
-| Background logs | `.venv/bin/comfy --workspace "$PWD/workspace" logs --tail 200` |
+| Background logs | `.venv/bin/comfy --workspace workspace logs --tail 200` |
 
 The server listens on <http://127.0.0.1:8188>. Prefer `mise run start` / `mise run stop` for agent-driven generation, and leave the server running between generations within one session.
 
@@ -64,8 +64,10 @@ Generated images land in `workspace/output/`. Input images for img2img belong in
 Run every command from the repository root — permission rules in `.claude/settings.json` match these exact prefixes.
 
 - mise tasks: `mise run <bootstrap|setup-comfyui|launch|start|stop|doctor>`; discover with `mise tasks`
-- comfy-cli: `.venv/bin/comfy --workspace "$PWD/workspace" <subcommand>` — always pass `--workspace` explicitly
-- ComfyUI HTTP API: `curl -s http://127.0.0.1:8188/<endpoint>` — write the URL immediately after `-s`, and put all other curl flags after the URL (e.g. `-X POST -d @file`, `-o out.png`) so the allowlisted prefix matches; wrap URLs containing `?` or `&` in double quotes
+- comfy-cli: `.venv/bin/comfy --workspace workspace <subcommand>` — always pass `--workspace workspace` exactly in this relative form (it resolves from the repo root, and permission rules match this literal prefix; an embedded `$PWD` would disable prefix matching)
+- ComfyUI HTTP API: `curl -s http://127.0.0.1:8188/<endpoint>` — write the URL immediately after `-s`, and put all other curl flags after the URL (e.g. `-X POST -d @file`, `-o out.png`) so the allowlisted prefix matches; wrap URLs containing `?` or `&` in double quotes. One localhost URL per curl invocation — never chain additional URLs or `--next`.
+- comfy-cli permission rules enumerate approved subcommands on the canonical form above. Destructive or outward-facing subcommands (`node uninstall`, `model remove`, `install`, `update`, `generate`, `publish`, `feedback`, top-level `--where cloud`) intentionally prompt — ask the user before running them.
+- Never pass `--where` or `--host`/non-local hosts on allowlisted comfy subcommands (`run`, `validate`, `jobs`, `download`, `upload`, `logs`), and never pass extra server args to `launch` (e.g. `-- --listen 0.0.0.0`) — the allowlist cannot block mid-argument flags, so this is a hard convention; ask the user first if remote routing is ever needed.
 - comfy-cli emits a JSON envelope (`{"schema": "envelope/1", ...}`) when not attached to a TTY; read `data` / `error` from it
 
 ## Working with ComfyUI (Skills)
