@@ -83,7 +83,7 @@ Standard image-generation flow: ensure a suitable model exists (`comfyui-assets`
 
 ## Conventions & Boundaries
 
-- ComfyUI and custom-node code in `workspace/` is read-only ground truth: never modify it. Reading it (`server.py`, `nodes.py`, `script_examples/`, `openapi.yaml`) to verify behavior is encouraged. The data directories (`models/`, `input/`, `output/`, `user/`) are written only through the flows described in the skills.
+- ComfyUI and custom-node code in `workspace/` is read-only ground truth: never modify it. Reading it (`server.py`, `nodes.py`, `script_examples/`, `openapi.yaml`) to verify behavior is encouraged. The data directories (`models/`, `input/`, `output/`) are written only through the flows described in the skills.
 - Never delete or rebuild `workspace/` or `.venv/` without an explicit user request; reinstalling costs a multi-GB download. `mise run setup-comfyui` is the sanctioned (re)install path and runs without a prompt — still run it only when the user explicitly asks.
 - Keep git-managed workflow JSONs in `workflows/` in API format (see the `comfyui-workflow` skill). `workspace/user/` is ComfyUI's own save area — do not manage it.
 - AI-facing docs (this file, skill bodies) are English; `README.md` is Japanese.
