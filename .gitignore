@@ -3,6 +3,8 @@ workspace/
 override.txt
 requirements.compiled
 
+tmp/
+
 .claude/settings.local.json
 .claude/agent-memory/
 
