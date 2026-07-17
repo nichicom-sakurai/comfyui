@@ -251,7 +251,7 @@ Read ツールで3枚を確認:
 
 **Step 2: 検証**
 
-Run: `.venv/bin/comfy --workspace workspace validate workflows/storyboard-yokkorasho/pose1-basic.json`
+Run: `.venv/bin/comfy --workspace workspace validate --workflow workflows/storyboard-yokkorasho/pose1-basic.json`（comfy-cli 1.12.0では`--workflow`が必須オプション。実行時に判明し修正済み）
 Expected: バリデーション成功（envelope の `ok: true`）
 
 **Step 3: Commit**
@@ -278,7 +278,7 @@ Task5と同一構成。差分のみ:
 
 **Step 2: 検証**
 
-Run: `.venv/bin/comfy --workspace workspace validate workflows/storyboard-yokkorasho/pose2-standup.json`
+Run: `.venv/bin/comfy --workspace workspace validate --workflow workflows/storyboard-yokkorasho/pose2-standup.json`（`--workflow`必須、Task5で判明）
 Expected: バリデーション成功
 
 **Step 3: Commit**
@@ -305,7 +305,7 @@ Task5と同一構成。差分のみ:
 
 **Step 2: 検証**
 
-Run: `.venv/bin/comfy --workspace workspace validate workflows/storyboard-yokkorasho/pose3-kneeext.json`
+Run: `.venv/bin/comfy --workspace workspace validate --workflow workflows/storyboard-yokkorasho/pose3-kneeext.json`（`--workflow`必須、Task5で判明）
 Expected: バリデーション成功
 
 **Step 3: Commit**
