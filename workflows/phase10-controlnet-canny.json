@@ -1,0 +1,84 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": { "image": "controlnet_reference.png" },
+    "_meta": { "title": "Load Image (Reference)" }
+  },
+  "2": {
+    "class_type": "CannyEdgePreprocessor",
+    "inputs": {
+      "image": ["1", 0],
+      "low_threshold": 100,
+      "high_threshold": 200,
+      "resolution": 512
+    },
+    "_meta": { "title": "Canny Edge Preprocessor" }
+  },
+  "3": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": { "ckpt_name": "v1-5-pruned-emaonly-fp16.safetensors" },
+    "_meta": { "title": "Load Checkpoint" }
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "a futuristic cyberpunk city at night, neon lights, skyscrapers, flying cars, rain-slicked streets, highly detailed, vibrant neon colors",
+      "clip": ["3", 1]
+    },
+    "_meta": { "title": "CLIP Text Encode (Positive)" }
+  },
+  "5": {
+    "class_type": "CLIPTextEncode",
+    "inputs": { "text": "text, watermark", "clip": ["3", 1] },
+    "_meta": { "title": "CLIP Text Encode (Negative)" }
+  },
+  "6": {
+    "class_type": "ControlNetLoader",
+    "inputs": { "control_net_name": "control_v11p_sd15_canny_fp16.safetensors" },
+    "_meta": { "title": "Load ControlNet Model" }
+  },
+  "7": {
+    "class_type": "ControlNetApplyAdvanced",
+    "inputs": {
+      "positive": ["4", 0],
+      "negative": ["5", 0],
+      "control_net": ["6", 0],
+      "image": ["2", 0],
+      "strength": 1.0,
+      "start_percent": 0.0,
+      "end_percent": 1.0
+    },
+    "_meta": { "title": "Apply ControlNet" }
+  },
+  "8": {
+    "class_type": "EmptyLatentImage",
+    "inputs": { "width": 512, "height": 512, "batch_size": 1 },
+    "_meta": { "title": "Empty Latent Image" }
+  },
+  "9": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 999,
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "denoise": 1.0,
+      "model": ["3", 0],
+      "positive": ["7", 0],
+      "negative": ["7", 1],
+      "latent_image": ["8", 0]
+    },
+    "_meta": { "title": "KSampler" }
+  },
+  "10": {
+    "class_type": "VAEDecode",
+    "inputs": { "samples": ["9", 0], "vae": ["3", 2] },
+    "_meta": { "title": "VAE Decode" }
+  },
+  "11": {
+    "class_type": "SaveImage",
+    "inputs": { "filename_prefix": "phase10_controlnet_canny", "images": ["10", 0] },
+    "_meta": { "title": "Save Image" }
+  }
+}
