@@ -17,14 +17,14 @@
   "4": {
     "class_type": "CLIPTextEncode",
     "inputs": {
-      "text": "rough storyboard sketch, monochrome pencil line art, loose expressive linework, generic featureless mannequin figure sitting upright on a simple chair, feet flat on floor, knees turned slightly outward, back straight, hands on knees, wide front-angle camera framing showing full chair and figure, blank background, production storyboard illustration style",
+      "text": "rough storyboard sketch, monochrome pencil line art, loose expressive linework, generic featureless mannequin figure sitting upright on a simple chair, spine perfectly vertical and straight, chin level, head up looking straight ahead, shoulders back, feet flat on floor, knees turned slightly outward, hands resting flat on knees, calm neutral resting pose, wide front-angle camera framing showing full chair and figure, single chair only, plain empty background with no other furniture, production storyboard illustration style",
       "clip": ["3", 1]
     },
     "_meta": { "title": "CLIP Text Encode (Positive)" }
   },
   "5": {
     "class_type": "CLIPTextEncode",
-    "inputs": { "text": "photorealistic, color, detailed skin texture, text, watermark, extra limbs, deformed hands, elderly features, realistic face, background clutter", "clip": ["3", 1] },
+    "inputs": { "text": "photorealistic, color, detailed skin texture, text, watermark, extra limbs, deformed hands, elderly features, realistic face, background clutter, hunched back, bowed head, slouching, bent forward, head down, multiple chairs, extra furniture, tables, curtains", "clip": ["3", 1] },
     "_meta": { "title": "CLIP Text Encode (Negative)" }
   },
   "6": {
