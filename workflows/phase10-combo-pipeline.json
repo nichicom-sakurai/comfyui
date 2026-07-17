@@ -1,0 +1,118 @@
+{
+  "3": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 777,
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "denoise": 1.0,
+      "model": ["4", 0],
+      "positive": ["6", 0],
+      "negative": ["7", 0],
+      "latent_image": ["5", 0]
+    },
+    "_meta": { "title": "KSampler (Stage 1: txt2img base)" }
+  },
+  "4": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": { "ckpt_name": "v1-5-pruned-emaonly-fp16.safetensors" },
+    "_meta": { "title": "Load Checkpoint" }
+  },
+  "5": {
+    "class_type": "EmptyLatentImage",
+    "inputs": { "width": 512, "height": 512, "batch_size": 1 },
+    "_meta": { "title": "Empty Latent Image" }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "a girl standing in a garden, full body, front view, detailed",
+      "clip": ["4", 1]
+    },
+    "_meta": { "title": "CLIP Text Encode (Positive, Stage 1)" }
+  },
+  "7": {
+    "class_type": "CLIPTextEncode",
+    "inputs": { "text": "text, watermark", "clip": ["4", 1] },
+    "_meta": { "title": "CLIP Text Encode (Negative, Stage 1)" }
+  },
+  "8": {
+    "class_type": "VAEDecode",
+    "inputs": { "samples": ["17", 0], "vae": ["4", 2] },
+    "_meta": { "title": "VAE Decode" }
+  },
+  "9": {
+    "class_type": "SaveImage",
+    "inputs": { "filename_prefix": "phase10_combo_pipeline", "images": ["8", 0] },
+    "_meta": { "title": "Save Image" }
+  },
+  "12": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": ["4", 0],
+      "clip": ["4", 1],
+      "lora_name": "blindbox_v1_mix.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8
+    },
+    "_meta": { "title": "Load LoRA (blindbox)" }
+  },
+  "13": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "a girl standing in a garden, full body, front view, detailed",
+      "clip": ["12", 1]
+    },
+    "_meta": { "title": "CLIP Text Encode (Positive, LoRA)" }
+  },
+  "14": {
+    "class_type": "CLIPTextEncode",
+    "inputs": { "text": "text, watermark", "clip": ["12", 1] },
+    "_meta": { "title": "CLIP Text Encode (Negative, LoRA)" }
+  },
+  "15": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 777,
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "denoise": 0.6,
+      "model": ["12", 0],
+      "positive": ["13", 0],
+      "negative": ["14", 0],
+      "latent_image": ["3", 0]
+    },
+    "_meta": { "title": "KSampler (Stage 2: LoRA style transfer)" }
+  },
+  "16": {
+    "class_type": "LatentUpscale",
+    "inputs": {
+      "samples": ["15", 0],
+      "upscale_method": "bislerp",
+      "width": 1024,
+      "height": 1024,
+      "crop": "disabled"
+    },
+    "_meta": { "title": "Latent Upscale" }
+  },
+  "17": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 777,
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "denoise": 0.4,
+      "model": ["12", 0],
+      "positive": ["13", 0],
+      "negative": ["14", 0],
+      "latent_image": ["16", 0]
+    },
+    "_meta": { "title": "KSampler (Stage 3: hires-fix upscale)" }
+  }
+}
