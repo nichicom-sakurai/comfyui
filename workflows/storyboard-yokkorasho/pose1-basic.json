@@ -2,59 +2,59 @@
   "1": {
     "class_type": "LoadImage",
     "inputs": { "image": "yokkorasho_pose1_basic.png" },
-    "_meta": { "title": "Load Image (Pose1 Reference)" }
+    "_meta": { "title": "画像読み込み（ポーズ1参照）" }
   },
   "2": {
     "class_type": "OpenposePreprocessor",
     "inputs": { "image": ["1", 0], "detect_hand": "disable", "detect_body": "enable", "detect_face": "disable", "resolution": 512 },
-    "_meta": { "title": "OpenPose Preprocessor" }
+    "_meta": { "title": "OpenPose 前処理" }
   },
   "3": {
     "class_type": "CheckpointLoaderSimple",
     "inputs": { "ckpt_name": "v1-5-pruned-emaonly-fp16.safetensors" },
-    "_meta": { "title": "Load Checkpoint" }
+    "_meta": { "title": "チェックポイント読み込み" }
   },
   "4": {
     "class_type": "CLIPTextEncode",
     "inputs": {
-      "text": "rough storyboard sketch, monochrome pencil line art, loose expressive linework, generic featureless mannequin figure sitting upright on a simple chair, spine perfectly vertical and straight, chin level, head up looking straight ahead, shoulders back, feet flat on floor, knees turned slightly outward, hands resting flat on knees, calm neutral resting pose, wide front-angle camera framing showing full chair and figure, single chair only, plain empty background with no other furniture, production storyboard illustration style",
+      "text": "ラフな絵コンテスケッチ、モノクロの鉛筆線画、粗く表現力のある線、シンプルな椅子に真っすぐ座る特徴のない汎用マネキン人形、背骨は完全に垂直でまっすぐ、顎は水平で正面をまっすぐ見ている、肩を後ろに引いている、足裏は床にしっかりつけている、膝はわずかに外側を向いている、両手は膝の上に平らに置いている、落ち着いた中立の休息姿勢、椅子と人物全体が写る広角の正面カメラアングル、椅子は1脚のみ、他の家具のない無地の背景、プロダクション用絵コンテイラストのスタイル",
       "clip": ["3", 1]
     },
-    "_meta": { "title": "CLIP Text Encode (Positive)" }
+    "_meta": { "title": "CLIPテキストエンコード（ポジティブ）" }
   },
   "5": {
     "class_type": "CLIPTextEncode",
-    "inputs": { "text": "photorealistic, color, detailed skin texture, text, watermark, extra limbs, deformed hands, elderly features, realistic face, background clutter, hunched back, bowed head, slouching, bent forward, head down, multiple chairs, extra furniture, tables, curtains", "clip": ["3", 1] },
-    "_meta": { "title": "CLIP Text Encode (Negative)" }
+    "inputs": { "text": "写真のようなリアルさ、カラー、詳細な肌の質感、テキスト、透かし、余分な手足、変形した手、高齢者の特徴、リアルな顔、雑然とした背景、猫背、うつむいた頭、前かがみ、前傾姿勢、下を向いた頭、複数の椅子、余分な家具、テーブル、カーテン", "clip": ["3", 1] },
+    "_meta": { "title": "CLIPテキストエンコード（ネガティブ）" }
   },
   "6": {
     "class_type": "ControlNetLoader",
     "inputs": { "control_net_name": "control_v11p_sd15_openpose_fp16.safetensors" },
-    "_meta": { "title": "Load ControlNet Model (OpenPose)" }
+    "_meta": { "title": "ControlNetモデル読み込み（OpenPose）" }
   },
   "7": {
     "class_type": "ControlNetApplyAdvanced",
     "inputs": { "positive": ["4", 0], "negative": ["5", 0], "control_net": ["6", 0], "image": ["2", 0], "strength": 1.0, "start_percent": 0.0, "end_percent": 1.0 },
-    "_meta": { "title": "Apply ControlNet" }
+    "_meta": { "title": "ControlNet適用" }
   },
   "8": {
     "class_type": "EmptyLatentImage",
     "inputs": { "width": 704, "height": 400, "batch_size": 1 },
-    "_meta": { "title": "Empty Latent Image" }
+    "_meta": { "title": "空の潜在画像" }
   },
   "9": {
     "class_type": "KSampler",
     "inputs": { "seed": 1001, "steps": 20, "cfg": 8, "sampler_name": "euler", "scheduler": "normal", "denoise": 1.0, "model": ["3", 0], "positive": ["7", 0], "negative": ["7", 1], "latent_image": ["8", 0] },
-    "_meta": { "title": "KSampler" }
+    "_meta": { "title": "サンプリング（KSampler）" }
   },
   "10": {
     "class_type": "VAEDecode",
     "inputs": { "samples": ["9", 0], "vae": ["3", 2] },
-    "_meta": { "title": "VAE Decode" }
+    "_meta": { "title": "VAEデコード" }
   },
   "11": {
     "class_type": "SaveImage",
     "inputs": { "filename_prefix": "storyboard_yokkorasho_pose1_basic", "images": ["10", 0] },
-    "_meta": { "title": "Save Image" }
+    "_meta": { "title": "画像保存" }
   }
 }

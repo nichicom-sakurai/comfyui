@@ -2,59 +2,59 @@
   "1": {
     "class_type": "LoadImage",
     "inputs": { "image": "yokkorasho_pose2_standup.png" },
-    "_meta": { "title": "Load Image (Pose2 Reference)" }
+    "_meta": { "title": "画像読み込み（ポーズ2参照）" }
   },
   "2": {
     "class_type": "OpenposePreprocessor",
     "inputs": { "image": ["1", 0], "detect_hand": "disable", "detect_body": "enable", "detect_face": "disable", "resolution": 512 },
-    "_meta": { "title": "OpenPose Preprocessor" }
+    "_meta": { "title": "OpenPose 前処理" }
   },
   "3": {
     "class_type": "CheckpointLoaderSimple",
     "inputs": { "ckpt_name": "v1-5-pruned-emaonly-fp16.safetensors" },
-    "_meta": { "title": "Load Checkpoint" }
+    "_meta": { "title": "チェックポイント読み込み" }
   },
   "4": {
     "class_type": "CLIPTextEncode",
     "inputs": {
-      "text": "rough storyboard sketch, monochrome pencil line art, loose expressive linework, generic featureless mannequin figure captured mid-motion rising from a chair, torso bent forward with a strong spinal curve, head leading forward and down, weight shifting from hips toward the feet, dynamic action lines emphasizing the forward lean and rising motion, chair visible beside the figure, side-angle camera framing showing the full standing-up arc, blank background, production storyboard illustration style",
+      "text": "ラフな絵コンテスケッチ、モノクロの鉛筆線画、粗く表現力のある線、椅子から立ち上がる動作の途中を捉えた特徴のない汎用マネキン人形、上体は強く前傾し背骨が大きく弯曲している、頭は前方かつ下方へ先行している、体重は腰から足へと移動している、前傾と立ち上がりの動きを強調する動的なアクションライン、人物の横に椅子が見えている、立ち上がりの一連の動きが分かる横からのカメラアングル、無地の背景、プロダクション用絵コンテイラストのスタイル",
       "clip": ["3", 1]
     },
-    "_meta": { "title": "CLIP Text Encode (Positive)" }
+    "_meta": { "title": "CLIPテキストエンコード（ポジティブ）" }
   },
   "5": {
     "class_type": "CLIPTextEncode",
-    "inputs": { "text": "photorealistic, color, detailed skin texture, text, watermark, extra limbs, deformed hands, elderly features, realistic face, background clutter", "clip": ["3", 1] },
-    "_meta": { "title": "CLIP Text Encode (Negative)" }
+    "inputs": { "text": "写真のようなリアルさ、カラー、詳細な肌の質感、テキスト、透かし、余分な手足、変形した手、高齢者の特徴、リアルな顔、雑然とした背景", "clip": ["3", 1] },
+    "_meta": { "title": "CLIPテキストエンコード（ネガティブ）" }
   },
   "6": {
     "class_type": "ControlNetLoader",
     "inputs": { "control_net_name": "control_v11p_sd15_openpose_fp16.safetensors" },
-    "_meta": { "title": "Load ControlNet Model (OpenPose)" }
+    "_meta": { "title": "ControlNetモデル読み込み（OpenPose）" }
   },
   "7": {
     "class_type": "ControlNetApplyAdvanced",
     "inputs": { "positive": ["4", 0], "negative": ["5", 0], "control_net": ["6", 0], "image": ["2", 0], "strength": 1.0, "start_percent": 0.0, "end_percent": 1.0 },
-    "_meta": { "title": "Apply ControlNet" }
+    "_meta": { "title": "ControlNet適用" }
   },
   "8": {
     "class_type": "EmptyLatentImage",
     "inputs": { "width": 704, "height": 400, "batch_size": 1 },
-    "_meta": { "title": "Empty Latent Image" }
+    "_meta": { "title": "空の潜在画像" }
   },
   "9": {
     "class_type": "KSampler",
     "inputs": { "seed": 1002, "steps": 20, "cfg": 8, "sampler_name": "euler", "scheduler": "normal", "denoise": 1.0, "model": ["3", 0], "positive": ["7", 0], "negative": ["7", 1], "latent_image": ["8", 0] },
-    "_meta": { "title": "KSampler" }
+    "_meta": { "title": "サンプリング（KSampler）" }
   },
   "10": {
     "class_type": "VAEDecode",
     "inputs": { "samples": ["9", 0], "vae": ["3", 2] },
-    "_meta": { "title": "VAE Decode" }
+    "_meta": { "title": "VAEデコード" }
   },
   "11": {
     "class_type": "SaveImage",
     "inputs": { "filename_prefix": "storyboard_yokkorasho_pose2_standup", "images": ["10", 0] },
-    "_meta": { "title": "Save Image" }
+    "_meta": { "title": "画像保存" }
   }
 }
