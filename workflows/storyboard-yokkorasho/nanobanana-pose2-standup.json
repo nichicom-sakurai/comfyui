@@ -1,0 +1,34 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": { "image": "yokkorasho_pose2_standup.png" },
+    "_meta": { "title": "画像読み込み（ポーズ2参照）" }
+  },
+  "2": {
+    "class_type": "OpenposePreprocessor",
+    "inputs": { "image": ["1", 0], "detect_hand": "disable", "detect_body": "enable", "detect_face": "disable", "resolution": 512 },
+    "_meta": { "title": "OpenPose 前処理" }
+  },
+  "3": {
+    "class_type": "BatchImagesNode",
+    "inputs": { "images": { "image_0": ["1", 0], "image_1": ["2", 0] } },
+    "_meta": { "title": "参照画像バッチ結合（実写＋骨格）" }
+  },
+  "4": {
+    "class_type": "GeminiImageNode",
+    "inputs": {
+      "prompt": "ラフな絵コンテスケッチ、モノクロの鉛筆線画、粗く表現力のある線。添付した2枚の参照画像（実写フレームとOpenPose骨格図）のポーズ・関節角度を忠実に再現すること。特に骨格図の関節位置を優先して姿勢を再現する。椅子から立ち上がる動作の途中を捉えた特徴のない汎用マネキン人形として描く。上体は強く前傾し背骨が大きく弯曲している、頭は前方かつ下方へ先行している、体重は腰から足へと移動している。前傾と立ち上がりの動きを強調する動的なアクションラインを加える。人物の横に椅子が見えるように描く。立ち上がりの一連の動きが分かる横からのカメラアングル。無地の背景。プロダクション用絵コンテイラストのスタイルで、写真のようなリアルさ・カラー・高齢者特有の特徴は避けること。",
+      "model": "gemini-2.5-flash-image",
+      "seed": 1002,
+      "images": ["3", 0],
+      "aspect_ratio": "16:9",
+      "response_modalities": "IMAGE"
+    },
+    "_meta": { "title": "Nano Banana 画像生成（Gemini）" }
+  },
+  "5": {
+    "class_type": "SaveImage",
+    "inputs": { "filename_prefix": "nanobanana_yokkorasho_pose2_standup", "images": ["4", 0] },
+    "_meta": { "title": "画像保存" }
+  }
+}
