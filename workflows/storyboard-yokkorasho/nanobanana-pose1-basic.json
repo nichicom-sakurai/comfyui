@@ -1,18 +1,46 @@
 {
   "1": {
     "class_type": "LoadImage",
-    "inputs": { "image": "yokkorasho_pose1_basic.png" },
-    "_meta": { "title": "画像読み込み（ポーズ1参照）" }
+    "inputs": {
+      "image": "yokkorasho_pose1_basic.png"
+    },
+    "_meta": {
+      "title": "画像読み込み（ポーズ1参照）"
+    }
   },
   "2": {
     "class_type": "OpenposePreprocessor",
-    "inputs": { "image": ["1", 0], "detect_hand": "disable", "detect_body": "enable", "detect_face": "disable", "resolution": 512 },
-    "_meta": { "title": "OpenPose 前処理" }
+    "inputs": {
+      "image": [
+        "1",
+        0
+      ],
+      "detect_hand": "disable",
+      "detect_body": "enable",
+      "detect_face": "disable",
+      "resolution": 512
+    },
+    "_meta": {
+      "title": "OpenPose 前処理"
+    }
   },
   "3": {
     "class_type": "BatchImagesNode",
-    "inputs": { "images": { "image_0": ["1", 0], "image_1": ["2", 0] } },
-    "_meta": { "title": "参照画像バッチ結合（実写＋骨格）" }
+    "inputs": {
+      "images": {
+        "image0": [
+          "1",
+          0
+        ],
+        "image1": [
+          "2",
+          0
+        ]
+      }
+    },
+    "_meta": {
+      "title": "参照画像バッチ結合（実写＋骨格）"
+    }
   },
   "4": {
     "class_type": "GeminiImageNode",
@@ -20,15 +48,28 @@
       "prompt": "ラフな絵コンテスケッチ、モノクロの鉛筆線画、粗く表現力のある線。添付した2枚の参照画像（実写フレームとOpenPose骨格図）のポーズ・関節角度を忠実に再現すること。特に骨格図の関節位置を優先して姿勢を再現する。シンプルな椅子に真っすぐ座る特徴のない汎用マネキン人形として描く。背骨は完全に垂直でまっすぐ、顎は水平で正面をまっすぐ見ている、肩を後ろに引いている、足裏は床にしっかりつけている、膝はわずかに外側を向いている、両手は膝の上に平らに置いている。椅子と人物全体が写る広角の正面カメラアングル。椅子は1脚のみ、他の家具のない無地の背景。プロダクション用絵コンテイラストのスタイルで、写真のようなリアルさ・カラー・高齢者特有の特徴は避けること。",
       "model": "gemini-2.5-flash-image",
       "seed": 1001,
-      "images": ["3", 0],
+      "images": [
+        "3",
+        0
+      ],
       "aspect_ratio": "16:9",
       "response_modalities": "IMAGE"
     },
-    "_meta": { "title": "Nano Banana 画像生成（Gemini）" }
+    "_meta": {
+      "title": "Nano Banana 画像生成（Gemini）"
+    }
   },
   "5": {
     "class_type": "SaveImage",
-    "inputs": { "filename_prefix": "nanobanana_yokkorasho_pose1_basic", "images": ["4", 0] },
-    "_meta": { "title": "画像保存" }
+    "inputs": {
+      "filename_prefix": "nanobanana_yokkorasho_pose1_basic",
+      "images": [
+        "4",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "画像保存"
+    }
   }
 }
